@@ -29,7 +29,42 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 
 ### Usage
 
-to be done
+
+Use with [Kubernetes Jenkins Plugin](https://github.com/jenkinsci/kubernetes-plugin) like so:
+
+```groovy
+podTemplate(
+  name: 'java-v1',
+  label: 'k8s-jenkins-slave-oracle-java-v1',
+  cloud: 'mycloud',
+  nodeSelector: 'failure-domain.beta.kubernetes.io/zone=eu-west-1a',
+  containers: [
+    containerTemplate(
+      name: 'jnlp',
+      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v1',
+      privileged: false,
+      command: '/opt/docker-entrypoint.sh',
+      args: '',
+      alwaysPullImage: false,
+      workingDir: '/home/jenkins',
+      resourceRequestCpu: '500m',
+      resourceLimitCpu: '1',
+      resourceRequestMemory: '3000Mi',
+      resourceLimitMemory: '3000Mi'
+    )
+  ]
+) {
+  node('k8s-jenkins-slave-oracle-java-v1') {
+    stage('build and test') {
+      sh 'yarn -version'
+      sh 'git clone https://github.com/clouless/angular-4-unit-test-dummy.git code'
+      dir('code') {
+        sh 'yarn && yarn test'
+      }
+    }
+  }
+}
+```
 
 
 **Debug** - Open a bash to e.g. check the tools

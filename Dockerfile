@@ -1,14 +1,9 @@
 FROM cloutainer/k8s-jenkins-slave-base:v16
 
 #
-# SDKS AND TOOLS
+# USER: super
 #
-RUN curl -s "https://get.sdkman.io" | bash && \
-    sed -i -e 's/sdkman_auto_answer=false/sdkman_auto_answer=true/g' /root/.sdkman/etc/config && \
-    sdk install java 8u141-oracle && \
-    sdk install gradle 4.1 && \
-    sdk install maven 3.5.0 && \
-    sdk install groovy 2.4.9
+USER root
 
 #
 # ATLASSIAN SDK
@@ -27,7 +22,19 @@ RUN echo "${ATLS_SHA512}  /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz" > /op
 # INSTALL AND CONFIGURE
 #
 COPY docker-entrypoint-hook.sh /opt/docker-entrypoint-hook.sh
-RUN chmod u+rx,g+rx,o+rx,a-w /opt/docker-entrypoint-hook.sh
+COPY install-sdks.sh /opt/install-sdks.sh
+RUN chmod u+rx,g+rx,o+rx,a-w /opt/docker-entrypoint-hook.sh && \
+    chmod u+rx,g+rx,o+rx,a-w /opt/install-sdks.sh
+
+#
+# USER: normal
+#
+USER jenkins
+
+#
+# SDKS AND TOOLS
+#
+RUN bash /opt/install-sdks.sh
 
 #
 # RUN

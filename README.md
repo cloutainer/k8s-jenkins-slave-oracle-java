@@ -58,9 +58,9 @@ podTemplate(
     stage('build and test') {
       sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
-        dir('spring-boot-samples') {
-          dir('spring-boot-sample-war') {
-            sh 'mvn compile'
+        dir('spring-boot-samples') {
+          dir('spring-boot-sample-war') {
+            sh 'mvn compile'
           }
         }
       }

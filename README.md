@@ -56,10 +56,13 @@ podTemplate(
 ) {
   node('k8s-jenkins-slave-oracle-java-v1') {
     stage('build and test') {
-      sh 'yarn -version'
-      sh 'git clone https://github.com/clouless/angular-4-unit-test-dummy.git code'
+      sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
-        sh 'yarn && yarn test'
+        dir('spring-boot-samples') {
+          dir('spring-boot-sample-war') {
+            sh 'mvn compile'
+          }
+        }
       }
     }
   }

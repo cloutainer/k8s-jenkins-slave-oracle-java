@@ -23,8 +23,12 @@ RUN echo "${ATLS_SHA512}  /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz" > /op
 #
 COPY docker-entrypoint-hook.sh /opt/docker-entrypoint-hook.sh
 COPY install-sdks.sh /opt/install-sdks.sh
+COPY install-sdkman.sh /opt/install-sdkman.sh
 RUN chmod u+rx,g+rx,o+rx,a-w /opt/docker-entrypoint-hook.sh && \
-    chmod u+rx,g+rx,o+rx,a-w /opt/install-sdks.sh
+    chmod u+rx,g+rx,o+rx,a-w /opt/install-sdks.sh && \
+    mkdir -p /opt/sdkman && \
+    chown jenkins:jenkins /opt/sdkman/ && \
+    chmod -R +x /opt/sdkman/
 
 #
 # USER: normal
@@ -39,6 +43,5 @@ RUN bash /opt/install-sdks.sh
 #
 # RUN
 #
-ENV MAVEN_REPOSITORY_MIRROR "false"
 ENV PATH ${PATH}:/opt/atlassian-plugin-sdk-${ATLS_VERSIN}/bin/
 USER jenkins

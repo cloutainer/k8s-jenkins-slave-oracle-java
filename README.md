@@ -2,7 +2,7 @@
 
 # k8s-jenkins-slave-oracle-java
 
-[![](https://codeclou.github.io/doc/badges/generated/docker-image-size-570.svg)](https://hub.docker.com/r/cloutainer/k8s-jenkins-slave-oracle-java/tags/) [![](https://codeclou.github.io/doc/badges/generated/docker-from-ubuntu-16.04.svg)](https://www.ubuntu.com/) [![](https://codeclou.github.io/doc/badges/generated/docker-run-as-non-root.svg)](https://docs.docker.com/engine/reference/builder/#/user)
+[![](https://codeclou.github.io/doc/badges/generated/docker-image-size-670.svg)](https://hub.docker.com/r/cloutainer/k8s-jenkins-slave-oracle-java/tags/) [![](https://codeclou.github.io/doc/badges/generated/docker-from-ubuntu-16.04.svg)](https://www.ubuntu.com/) [![](https://codeclou.github.io/doc/badges/generated/docker-run-as-non-root.svg)](https://docs.docker.com/engine/reference/builder/#/user)
 
 Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlassian SDK.
 
@@ -19,10 +19,14 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 | gradle | 4.1 |
 | groovy | 2.4.9 |
 | cloudfoundry cli | apt-get |
+| kubernetes cli | apt-get |
+| docker cli`*` | apt-get |
 | git | apt-get |
 | curl, wget | apt-get |
 | zip, bzip2 | apt-get |
 | jq | apt-get |
+
+`*` You need to mount the `/var/run/docker.sock` as volume.
 
 -----
 &nbsp;
@@ -34,14 +38,14 @@ Use with [Kubernetes Jenkins Plugin](https://github.com/jenkinsci/kubernetes-plu
 
 ```groovy
 podTemplate(
-  name: 'java-v5',
-  label: 'k8s-jenkins-slave-oracle-java-v5',
+  name: 'java-v8',
+  label: 'k8s-jenkins-slave-oracle-java-v8',
   cloud: 'mycloud',
   nodeSelector: 'failure-domain.beta.kubernetes.io/zone=eu-west-1a',
   containers: [
     containerTemplate(
       name: 'jnlp',
-      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v5',
+      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v8',
       privileged: false,
       command: '/opt/docker-entrypoint.sh',
       args: '',
@@ -54,7 +58,7 @@ podTemplate(
     )
   ]
 ) {
-  node('k8s-jenkins-slave-oracle-java-v5') {
+  node('k8s-jenkins-slave-oracle-java-v8') {
     stage('build and test') {
       sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
@@ -73,7 +77,7 @@ podTemplate(
 **Debug** - Open a bash to e.g. check the tools
 
 ```
-docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v5
+docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v8
 $> atlas-version
 ...
 $> java -version

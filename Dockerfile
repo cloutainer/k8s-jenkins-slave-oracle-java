@@ -1,4 +1,4 @@
-FROM cloutainer/k8s-jenkins-slave-base:v18
+FROM cloutainer/k8s-jenkins-slave-base:v19
 
 #
 # USER: super

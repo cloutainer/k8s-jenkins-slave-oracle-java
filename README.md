@@ -18,15 +18,10 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 | maven | 3.5.0 |
 | gradle | 4.1 |
 | groovy | 2.4.9 |
-| cloudfoundry cli | apt-get |
-| kubernetes cli | apt-get |
-| docker cli`*` | apt-get |
 | git | apt-get |
 | curl, wget | apt-get |
 | zip, bzip2 | apt-get |
 | jq | apt-get |
-
-`*` You need to mount the `/var/run/docker.sock` as volume.
 
 -----
 &nbsp;

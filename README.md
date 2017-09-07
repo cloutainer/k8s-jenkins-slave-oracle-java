@@ -17,7 +17,6 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 | atlassian sdk | 6.1.14 |
 | maven | 3.5.0 |
 | gradle | 4.1 |
-| groovy | 2.4.9 |
 | git | apt-get |
 | curl, wget | apt-get |
 | zip, bzip2 | apt-get |

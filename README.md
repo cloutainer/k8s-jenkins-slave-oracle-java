@@ -32,14 +32,14 @@ Use with [Kubernetes Jenkins Plugin](https://github.com/jenkinsci/kubernetes-plu
 
 ```groovy
 podTemplate(
-  name: 'java-v12',
-  label: 'k8s-jenkins-slave-oracle-java-v12',
+  name: 'java-v13',
+  label: 'k8s-jenkins-slave-oracle-java-v13',
   cloud: 'mycloud',
   nodeSelector: 'failure-domain.beta.kubernetes.io/zone=eu-west-1a',
   containers: [
     containerTemplate(
       name: 'jnlp',
-      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v12',
+      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v13',
       privileged: false,
       command: '/opt/docker-entrypoint.sh',
       args: '',
@@ -52,7 +52,7 @@ podTemplate(
     )
   ]
 ) {
-  node('k8s-jenkins-slave-oracle-java-v12') {
+  node('k8s-jenkins-slave-oracle-java-v13') {
     stage('build and test') {
       sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
@@ -71,7 +71,7 @@ podTemplate(
 **Debug** - Open a bash to e.g. check the tools
 
 ```
-docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v12
+docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v13
 $> atlas-version
 ...
 $> java -version

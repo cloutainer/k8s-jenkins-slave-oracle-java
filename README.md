@@ -13,10 +13,10 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 
 | tool | version |
 |------|---------|
-| java jdk | Oracle 8u141 |
-| atlassian sdk | 6.1.14 |
-| maven | 3.5.0 |
-| gradle | 4.1 |
+| java jdk | Oracle 8u161 |
+| atlassian sdk | 6.3.10 |
+| maven | 3.5.2 |
+| gradle | 4.5.1 |
 | git | apt-get |
 | curl, wget | apt-get |
 | zip, bzip2 | apt-get |
@@ -32,14 +32,14 @@ Use with [Kubernetes Jenkins Plugin](https://github.com/jenkinsci/kubernetes-plu
 
 ```groovy
 podTemplate(
-  name: 'java-v11',
-  label: 'k8s-jenkins-slave-oracle-java-v11',
+  name: 'java-v12',
+  label: 'k8s-jenkins-slave-oracle-java-v12',
   cloud: 'mycloud',
   nodeSelector: 'failure-domain.beta.kubernetes.io/zone=eu-west-1a',
   containers: [
     containerTemplate(
       name: 'jnlp',
-      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v11',
+      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v12',
       privileged: false,
       command: '/opt/docker-entrypoint.sh',
       args: '',
@@ -52,7 +52,7 @@ podTemplate(
     )
   ]
 ) {
-  node('k8s-jenkins-slave-oracle-java-v11') {
+  node('k8s-jenkins-slave-oracle-java-v12') {
     stage('build and test') {
       sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
@@ -71,7 +71,7 @@ podTemplate(
 **Debug** - Open a bash to e.g. check the tools
 
 ```
-docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v11
+docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v12
 $> atlas-version
 ...
 $> java -version

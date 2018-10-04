@@ -61,6 +61,14 @@ RUN curl -jkSL -o /opt/gradle.zip https://services.gradle.org/distributions/grad
     rm -f /opt/gradle.zip && \
     mv /opt/gradle-* /opt/gradle/
 
+
+#
+# KUBERNETES CLI (kubectl)
+#
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+    chmod +x ./kubectl && \
+    mv ./kubectl /usr/local/bin/kubectl
+
 #
 # INSTALL AND CONFIGURE
 #

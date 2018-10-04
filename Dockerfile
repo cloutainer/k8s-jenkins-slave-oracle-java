@@ -45,7 +45,7 @@ RUN echo "${JAVA_SHA512}  /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.g
 #
 # APACHE MAVEN
 #
-RUN curl -jkSL -o /opt/maven.tar.gz http://ftp.fau.de/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz && \
+RUN curl -jkSL -o /opt/maven.tar.gz http://www-eu.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz && \
     tar -C /opt -xf /opt/maven.tar.gz && \
     rm -f /opt/maven.tar.gz && \
     mv /opt/apache-maven-* /opt/apache-maven/
@@ -53,7 +53,7 @@ RUN curl -jkSL -o /opt/maven.tar.gz http://ftp.fau.de/apache/maven/maven-3/3.5.2
 #
 # GRADLE
 #
-RUN curl -jkSL -o /opt/gradle.zip https://services.gradle.org/distributions/gradle-4.5.1-bin.zip && \
+RUN curl -jkSL -o /opt/gradle.zip https://services.gradle.org/distributions/gradle-4.10.2-bin.zip && \
     unzip /opt/gradle.zip -d /opt/ && \
     rm -f /opt/gradle.zip && \
     mv /opt/gradle-* /opt/gradle/

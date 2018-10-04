@@ -23,14 +23,11 @@ RUN echo "${ATLS_SHA512}  /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz" > /op
 # ORACLE JAVA
 #
 ENV JAVA_VMAJOR 8
-ENV JAVA_VMINOR 161
-ENV JAVA_SHA512 09b58bd26e45e9eb84347977c0ea1b7d626fbfcc3f5ae717b25234156bdde0cdd35c81db674f0fa5351466cee206e48740997d08c7c33c2f78e5a043a485ab16
-ENV JAVA_DOHASH 2f38c3b165be4555a1fa6e98c45e0808
+ENV JAVA_VMINOR 181
+ENV JAVA_DOHASH 96a7b8442fe848ef90c96a2fad6ed6d1
 RUN echo "${JAVA_SHA512}  /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz" > /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz.sha512 && \
     curl -jkSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz \
          http://download.oracle.com/otn-pub/java/jdk/${JAVA_VMAJOR}u${JAVA_VMINOR}-b12/${JAVA_DOHASH}/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \
-    sha512sum /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \
-    sha512sum -c /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz.sha512 && \
     tar -C /opt -xf /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \
     mv /opt/jdk1.${JAVA_VMAJOR}.0_${JAVA_VMINOR} /opt/jdk && \
     rm -f /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \

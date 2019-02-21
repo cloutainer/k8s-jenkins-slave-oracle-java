@@ -13,8 +13,8 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 
 | tool | version |
 |------|---------|
-| java jdk | Oracle 8u181 |
-| atlassian sdk | 6.3.10 |
+| java jdk | AdoptOpenJDK 8u202-b08 |
+| atlassian sdk | 8.0.7 |
 | maven | 3.5.4 |
 | gradle | 4.10.2 |
 | git | apt-get |
@@ -32,14 +32,14 @@ Use with [Kubernetes Jenkins Plugin](https://github.com/jenkinsci/kubernetes-plu
 
 ```groovy
 podTemplate(
-  name: 'java-v14',
-  label: 'k8s-jenkins-slave-oracle-java-v14',
+  name: 'java-v15',
+  label: 'k8s-jenkins-slave-oracle-java-v15',
   cloud: 'mycloud',
   nodeSelector: 'failure-domain.beta.kubernetes.io/zone=eu-west-1a',
   containers: [
     containerTemplate(
       name: 'jnlp',
-      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v14',
+      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v15',
       privileged: false,
       command: '/opt/docker-entrypoint.sh',
       args: '',
@@ -52,7 +52,7 @@ podTemplate(
     )
   ]
 ) {
-  node('k8s-jenkins-slave-oracle-java-v14') {
+  node('k8s-jenkins-slave-oracle-java-v15') {
     stage('build and test') {
       sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
@@ -71,7 +71,7 @@ podTemplate(
 **Debug** - Open a bash to e.g. check the tools
 
 ```
-docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v14
+docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v15
 $> atlas-version
 ...
 $> java -version

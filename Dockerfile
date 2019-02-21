@@ -8,11 +8,12 @@ USER root
 #
 # ATLASSIAN SDK
 #
-ENV ATLS_VERSIN 6.3.10
-ENV ATLS_SHA512 c4be1f24d1e54757173fbc72400e72bb3e07942b628a666c4460c767c70090e391a23101e19d95776314778600961d09a1374b9193eefc139c0aa269da2345b5
+
+ENV ATLS_VERSIN 8.0.7
+ENV ATLS_SHA512 b1616fa7dc879c64605c7a55dfdd9491c4ca8015f8aee049d58affe97372bbdc65167f8720a52bd7fdc76f9c0d128705da8168caff90394f34d8e8f2d515509b
 RUN echo "${ATLS_SHA512}  /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz" > /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz.sha512 && \
     curl -jkSL -o /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz \
-         https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/${ATLS_VERSIN}/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz && \
+    https://packages.atlassian.com/maven/repository/public/com/atlassian/amps/atlassian-plugin-sdk/${ATLS_VERSIN}/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz && \
     sha512sum /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz && \
     sha512sum -c /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz.sha512 && \
     tar -C /opt -xf /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz && \
@@ -20,26 +21,23 @@ RUN echo "${ATLS_SHA512}  /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz" > /op
     rm -f /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz
 
 #
-# ORACLE JAVA
+# ORACLE OPENJDK JAVA
 #
-ENV JAVA_VMAJOR 8
-ENV JAVA_VMINOR 181
-ENV JAVA_DOHASH 96a7b8442fe848ef90c96a2fad6ed6d1
-RUN echo "${JAVA_SHA512}  /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz" > /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz.sha512 && \
-    curl -jkSLH "Cookie: oraclelicense=accept-securebackup-cookie" -o /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz \
-         http://download.oracle.com/otn-pub/java/jdk/${JAVA_VMAJOR}u${JAVA_VMINOR}-b12/${JAVA_DOHASH}/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \
-    tar -C /opt -xf /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \
-    mv /opt/jdk1.${JAVA_VMAJOR}.0_${JAVA_VMINOR} /opt/jdk && \
-    rm -f /opt/jdk-${JAVA_VMAJOR}u${JAVA_VMINOR}-linux-x64.tar.gz && \
-    rm -f /opt/jdk/src.zip /opt/jdk/javafx-src.zip && \
+ENV JAVA_SHA512 8e04d22fe03d2ab92e48fbbfe7d6015d9062d8e767d55ca9235e02b39841236d47b8977ae0252d5f4351a4c5fe082d377e2f8978156cf73c0208028a422e5e4c
+RUN echo "${JAVA_SHA512}  /opt/jdk--linux-x64.tar.gz" > /opt/jdk--linux-x64.tar.gz.sha512 && \
+    curl -jkSL -o /opt/jdk-linux-x64.tar.gz \
+    "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u202b08.tar.gz" && \
+    tar -C /opt -xf /opt/jdk-linux-x64.tar.gz && \
+    mv /opt/jdk8u202-b08 /opt/jdk && \
+    rm -f /opt/jdk-linux-x64.tar.gz && \
     chown jenkins /opt/jdk/jre/lib/security/cacerts && \
     update-alternatives --install "/usr/bin/java" "java" "/opt/jdk/bin/java" 1 && \
     update-alternatives --install "/usr/bin/javac" "javac" "/opt/jdk/bin/javac" 1 && \
-    update-alternatives --install "/usr/bin/javaws" "javaws" "/opt/jdk/bin/javaws" 1 && \
+    #update-alternatives --install "/usr/bin/javaws" "javaws" "/opt/jdk/bin/javaws" 1 && \
     update-alternatives --install "/usr/bin/jar" "jar" "/opt/jdk/bin/jar" 1 && \
     update-alternatives --set "java" "/opt/jdk/bin/java" && \
     update-alternatives --set "javac" "/opt/jdk/bin/javac" && \
-    update-alternatives --set "javaws" "/opt/jdk/bin/javaws" && \
+    #update-alternatives --set "javaws" "/opt/jdk/bin/javaws" && \
     update-alternatives --set "jar" "/opt/jdk/bin/jar"
 
 #

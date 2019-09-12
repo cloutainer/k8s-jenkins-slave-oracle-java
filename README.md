@@ -13,10 +13,10 @@ Kubernetes Docker image providing Jenkins Slave JNLP with Oracle Java and Atlass
 
 | tool | version |
 |------|---------|
-| java jdk | AdoptOpenJDK 8u202-b08 |
-| atlassian sdk | 8.0.7 |
-| maven | 3.5.4 |
-| gradle | 4.10.2 |
+| java jdk | AdoptOpenJDK 8u222-b10 |
+| atlassian sdk | 8.0.16 |
+| maven | 3.6.2 |
+| gradle | 5.6.2 |
 | git | apt-get |
 | curl, wget | apt-get |
 | zip, bzip2 | apt-get |
@@ -32,14 +32,14 @@ Use with [Kubernetes Jenkins Plugin](https://github.com/jenkinsci/kubernetes-plu
 
 ```groovy
 podTemplate(
-  name: 'java-v15',
-  label: 'k8s-jenkins-slave-oracle-java-v15',
+  name: 'java-v16',
+  label: 'k8s-jenkins-slave-oracle-java-v16',
   cloud: 'mycloud',
   nodeSelector: 'failure-domain.beta.kubernetes.io/zone=eu-west-1a',
   containers: [
     containerTemplate(
       name: 'jnlp',
-      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v15',
+      image: 'cloutainer/k8s-jenkins-slave-oracle-java:v16',
       privileged: false,
       command: '/opt/docker-entrypoint.sh',
       args: '',
@@ -52,7 +52,7 @@ podTemplate(
     )
   ]
 ) {
-  node('k8s-jenkins-slave-oracle-java-v15') {
+  node('k8s-jenkins-slave-oracle-java-v16') {
     stage('build and test') {
       sh 'git clone https://github.com/spring-projects/spring-boot.git code'
       dir('code') {
@@ -71,7 +71,7 @@ podTemplate(
 **Debug** - Open a bash to e.g. check the tools
 
 ```
-docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v15
+docker run -i -t --entrypoint "/bin/bash" cloutainer/k8s-jenkins-slave-oracle-java:v16
 $> atlas-version
 ...
 $> java -version
@@ -87,8 +87,8 @@ $> gradle -version
  * **Atlassian SDK**
    * Atlassian® are registered [trademarks of Atlassian Pty Ltd](https://de.atlassian.com/legal/trademark).
    * Please check yourself for corresponding Licenses and Terms of Use at [atlassian.com](https://atlassian.com).
- * **Oracle Java JDK 8**
-   * Oracle and Java are registered [trademarks of Oracle](https://www.oracle.com/legal/trademarks.html) and/or its affiliates. Other names may be trademarks of their respective owners.
+ * **Oracle Java**
+   * Oracle, OpenJDK and Java are registered [trademarks of Oracle](https://www.oracle.com/legal/trademarks.html) and/or its affiliates. Other names may be trademarks of their respective owners.
    * Please check yourself for corresponding Licenses and Terms of Use at [www.oracle.com](https://www.oracle.com/).
  * **Docker**
    * Docker and the Docker logo are trademarks or registered [trademarks of Docker](https://www.docker.com/trademark-guidelines), Inc. in the United States and/or other countries. Docker, Inc. and other parties may also have trademark rights in other terms used herein.

@@ -19,11 +19,15 @@ RUN curl -jkSL -o /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz \
 # ORACLE OPENJDK JAVA
 #
 RUN curl -jkSL -o /opt/jdk-linux-x64.tar.gz \
-    "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u222b10.tar.gz" && \
+    #"https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u222b10.tar.gz" && \
+    # github releases are super slow ... so using other mirror
+    "https://ftp.fau.de/gentoo/distfiles/OpenJDK8U-jdk_x64_linux_hotspot_8u232b09.tar.gz" && \
     tar -C /opt -xf /opt/jdk-linux-x64.tar.gz && \
-    mv /opt/jdk8u222-b10 /opt/jdk && \
+    ls -lah /opt && \
+    mv /opt/jdk8u232* /opt/jdk && \
     rm -f /opt/jdk-linux-x64.tar.gz && \
-    chown jenkins /opt/jdk/jre/lib/security/cacerts && \
+    chown jenkins /opt/jdk/lib/security/cacerts | true && \
+    chown jenkins /opt/jdk/jre/lib/security/cacerts | true && \
     update-alternatives --install "/usr/bin/java" "java" "/opt/jdk/bin/java" 1 && \
     update-alternatives --install "/usr/bin/javac" "javac" "/opt/jdk/bin/javac" 1 && \
     #update-alternatives --install "/usr/bin/javaws" "javaws" "/opt/jdk/bin/javaws" 1 && \

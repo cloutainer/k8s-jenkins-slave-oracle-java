@@ -8,7 +8,7 @@ USER root
 #
 # ATLASSIAN SDK
 #
-ENV ATLS_VERSIN 8.2.6
+ENV ATLS_VERSIN 8.2.7
 RUN curl -jkSL -o /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz \
     https://packages.atlassian.com/maven/repository/public/com/atlassian/amps/atlassian-plugin-sdk/${ATLS_VERSIN}/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz && \
     tar -C /opt -xf /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz && \
@@ -19,12 +19,10 @@ RUN curl -jkSL -o /opt/atlassian-plugin-sdk-${ATLS_VERSIN}.tar.gz \
 # ORACLE OPENJDK JAVA
 #
 RUN curl -jkSL -o /opt/jdk-linux-x64.tar.gz \
-    #"https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_x64_linux_hotspot_8u222b10.tar.gz" && \
-    # github releases are super slow ... so using other mirror
-    "https://ftp.fau.de/gentoo/distfiles/OpenJDK8U-jdk_x64_linux_hotspot_8u282b08.tar.gz" && \
+    "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u322-b06/OpenJDK8U-jdk_x64_linux_hotspot_8u322b06.tar.gz" && \
     tar -C /opt -xf /opt/jdk-linux-x64.tar.gz && \
     ls -lah /opt && \
-    mv /opt/jdk8u282* /opt/jdk && \
+    mv /opt/jdk8u* /opt/jdk && \
     rm -f /opt/jdk-linux-x64.tar.gz && \
     chown jenkins /opt/jdk/lib/security/cacerts | true && \
     chown jenkins /opt/jdk/jre/lib/security/cacerts | true && \
@@ -40,7 +38,7 @@ RUN curl -jkSL -o /opt/jdk-linux-x64.tar.gz \
 #
 # APACHE MAVEN
 #
-RUN curl -jkSL -o /opt/maven.tar.gz https://www-eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz && \
+RUN curl -jkSL -o /opt/maven.tar.gz https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz && \
     tar -C /opt -xf /opt/maven.tar.gz && \
     rm -f /opt/maven.tar.gz && \
     mv /opt/apache-maven-* /opt/apache-maven/
@@ -48,7 +46,7 @@ RUN curl -jkSL -o /opt/maven.tar.gz https://www-eu.apache.org/dist/maven/maven-3
 #
 # GRADLE
 #
-RUN curl -jkSL -o /opt/gradle.zip https://services.gradle.org/distributions/gradle-6.8.2-bin.zip && \
+RUN curl -jkSL -o /opt/gradle.zip https://services.gradle.org/distributions/gradle-7.4.2-bin.zip && \
     unzip /opt/gradle.zip -d /opt/ && \
     rm -f /opt/gradle.zip && \
     mv /opt/gradle-* /opt/gradle/
@@ -76,5 +74,7 @@ USER jenkins
 # RUN
 #
 ENV JAVA_HOME /opt/jdk
+# 2022-04 Since AMPS 8.3.x we need to tell the SDK to use Maven > 3.6.x => the bundled version is not compatible!
+ENV ATLAS_MVN /opt/apache-maven/bin/mvn
 ENV PATH ${PATH}:/opt/atlassian-plugin-sdk-${ATLS_VERSIN}/bin/:/opt/jdk/bin:/opt/gradle/bin:/opt/apache-maven/bin
 USER jenkins
